@@ -1,100 +1,121 @@
 import React from "react";
-import ReactModalLogin from "react-modal-login";
- 
-import { facebookConfig, googleConfig } from "react-social";
- 
+import { apiAuth, apiHandleSignUpAndLogIn } from "../../api/api"
+
 class Alert extends React.Component {
-  constructor(props) {
-    super(props);
- 
-    this.state = {
-      showModal: false,
-      loading: false,
-      error: null
+    state = {
+        userDetails: {
+            nickName: '',
+            email: '',
+            password: ''
+        },
+        isAuth: false,
+        loggedin: ''
     };
-  }
- 
-  openModal() {
-    this.setState({
-      showModal: true
-    });
-  }
- 
-  closeModal() {
-    this.setState({
-      showModal: false,
-      error: null
-    });
-  }
- 
-  onLoginSuccess(method, response) {
-    console.log("logged successfully with " + method);
-  }
- 
-  onLoginFail(method, response) {
-    console.log("logging failed with " + method);
-    this.setState({
-      error: response
-    });
-  }
- 
-  startLoading() {
-    this.setState({
-      loading: true
-    });
-  }
- 
-  finishLoading() {
-    this.setState({
-      loading: false
-    });
-  }
- 
-  afterTabsChange() {
-    this.setState({
-      error: null
-    });
-  }
- 
-  render() {
-    return (
-      <div>
-        <button onClick={() => this.openModal()}>Open Modal</button>
- 
-        <ReactModalLogin
-          visible={this.state.showModal}
-          onCloseModal={this.closeModal.bind(this)}
-          loading={this.state.loading}
-          error={this.state.error}
-          tabs={{
-            afterChange: this.afterTabsChange.bind(this)
-          }}
-          loginError={{
-            label: "Couldn't sign in, please try again."
-          }}
-          registerError={{
-            label: "Couldn't sign up, please try again."
-          }}
-          startLoading={this.startLoading.bind(this)}
-          finishLoading={this.finishLoading.bind(this)}
-          providers={{
-            facebook: {
-              config: '646786669187476',
-              onLoginSuccess: this.onLoginSuccess.bind(this),
-              onLoginFail: this.onLoginFail.bind(this),
-              label: "Continue with Facebook"
-            },
-            google: {
-              config: '59258566648',
-              onLoginSuccess: this.onLoginSuccess.bind(this),
-              onLoginFail: this.onLoginFail.bind(this),
-              label: "Continue with Google"
-            }
-          }}
-        />
-      </div>
-    );
-  }
+
+    componentDidMount = () => {
+        apiAuth()
+            .then(userObj => {
+                this.setState({
+                    isAuth: true,
+                    loggedInEmail:
+                        userObj.email
+                }, () => {
+                    this.props.appHandleAuthSubmit()
+                })
+            })
+
+            .catch(err => console.log(err))
+    }
+
+    setModalShow = setModal => {
+        this.setState({ showModal: setModal })
+    }
+
+    handleChange = e => {
+        const userDetails = { ...this.state.userDetails }
+        userDetails[e.target.name] = e.target.value;
+        this.setState({ userDetails });
+    }
+
+    handleInputOnSubmit = (event) => {
+        event.preventDefault();
+        const { userDetails } = this.state;
+        console.log(userDetails)
+
+        apiHandleSignUpAndLogIn(userDetails)
+            .then(result => {
+                if(result){
+                    console.log("User created successfully")
+
+                    const { email } = result
+
+                    this.setState({
+                        userDetails: {
+                            nickName: '',
+                            email: '',
+                        password: ''
+                        },
+                        isAuth: true,
+                        loggedInEmail: email                 
+                    }, () => {
+                        this.props.appHandleAuthSubmit()
+                    })
+                }
+            })
+            .catch(errorMessage => {
+                this.setState({
+                    errorToggle: true,
+                    errorMessage: errorMessage
+                })
+            })
+    }
+
+
+    render() {
+        const { nickName, email, password } = this.state.userDetails;
+        return (
+            <div>
+                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    Launch demo modal
+                </button>
+                <div className="modal fade" id="exampleModalCenter" trole="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                            <form onSubmit={this.handleInputOnSubmit}>
+                                    <div className="form-group">
+                                        <label htmlFor="exampleInputEmail1">Nickname</label>
+                                        <input type="text" className="form-control" name="nickName" value={nickName} onChange={this.handleChange}/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="exampleInputEmail1">Email</label>
+                                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" value={email} onChange={this.handleChange}/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="exampleInputPassword1">Password</label>
+                                        <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} id="exampleInputPassword1" />
+                                    </div>
+                                    <button type="submit" className="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
 }
+
+
 
 export default Alert

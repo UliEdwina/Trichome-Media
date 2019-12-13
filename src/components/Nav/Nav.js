@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
-import {apiAuth }
-from '../../api/api'
+// import {apiAuth }
+// from '../../api/api'
 import '../../index.css';
 import posed, { PoseGroup } from 'react-pose';
 
@@ -32,13 +32,7 @@ constructor(props){
     super(props)
         this.state ={
             isVisible: false,
-            email: '',
-            password: '',
-            screenname: '',
-            isAuth: false,
-            loggedInEmail: '',
-            errorMessage: false,
-            errorToggle: false
+            
         }
     
 }
@@ -48,16 +42,7 @@ componentDidMount = () => {
         this.setState({ 
             isVisible: !this.state.isVisible
         })}, 3000)
-    apiAuth()
-        .then(userObj => {
-            this.setState({isAuth:true,
-                loggedInEmail:
-                userObj.email }, () => {
-                    this.props.appHandleAuthSubmit()
-                })
-            })
     
-        .catch( err => console.log(err))
        
     }   
 
@@ -80,6 +65,7 @@ render() {
       </PoseGroup>
                 
                 </div>
+                
             { this.state.isAuth ? (
                 <>
                     <span>
@@ -121,6 +107,7 @@ render() {
         >
             { this.state.errorToggle ? this.state.errorMessage : '' }
         </span>
+    
         </>
     )
 }

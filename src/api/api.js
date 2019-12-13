@@ -23,7 +23,7 @@ export const apiAuth = () => {
                             }
                             resolve(user)
                         }
-                    })
+        })
 }
 
 export const apiHandleSignUpAndLogIn = (userInfo) => {
@@ -40,16 +40,15 @@ export const apiHandleSignUpAndLogIn = (userInfo) => {
 
                 resolve(decoded)
             })
-            .catch(error => reject(error.response.data.message))
+            .catch(error => reject(error))
     })
 }
 
 const axiosConfig = {
         headers: {
-            'Content-Type': 'application/json;charset=UTF-8', 'Access-Control-Allow-Origin':
+            'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin':
 
             '*'
-    
 
         }
 
