@@ -18,8 +18,9 @@ export const apiAuth = () => {
                     } else {
                         setAuthJWT(token)
                             const user = {
-                            id:  decoded.id, 
-                            email: decoded.email
+                            nickName:  decoded.nickName, 
+                            email: decoded.email,
+                            password: decoded.password
                             }
                             resolve(user)
                         }
@@ -28,7 +29,7 @@ export const apiAuth = () => {
 
 export const apiHandleSignUpAndLogIn = (userInfo) => {
     return new Promise((resolve, reject) => {
-        Axios.post('/users/usersignupandin', userInfo, axiosConfig)
+        Axios.post('/users/usersignupandlogin', userInfo, axiosConfig)
             .then(result => { 
                 const { token } = result.data
 

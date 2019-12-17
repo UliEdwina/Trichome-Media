@@ -1,116 +1,169 @@
 
 import React, { Component } from 'react';
-// import {apiAuth }
+// import {apiAuth}
 // from '../../api/api'
 import '../../index.css';
-import posed, { PoseGroup } from 'react-pose';
+import Alert from  '../../components/Modal/Alert'
 
-
-
-const Modal = posed.div({
-    enter: {
-      x: 100,
-      opacity: 1,
-      delay: 0,
-      transition: ({ from, to }) => ({
-        type: 'keyframes',
-        values: [from, 10, to],
-        times: [0, 0.25, 1]
-      })
-    }
-   
-  });
-  
-  const Shade = posed.div({
-    enter: { opacity: 5 },
-    exit: { opacity: 10 }
-  });
 
 class Navbar extends Component {
 
 constructor(props){
     super(props)
         this.state ={
-            isVisible: false,
+            userDetails: {
+               
+                email: '',
+                password: ''
+            },
+            isAuth: true,
+            loggedInEmail: ''
+            
             
         }
     
 }
+// handleInputOnSubmit = (event) => {
+//     event.preventDefault();
+//     const { userDetails } = this.state;
+//     console.log(userDetails)
+// apiHandleSignUpandLogIn(userDetails)
+//             .then(result => {
+//                 if(result){
+//                     console.log("User created successfully")
 
-componentDidMount = () => {
-    setInterval(() => {
-        this.setState({ 
-            isVisible: !this.state.isVisible
-        })}, 3000)
-    
+//                     const { email } = result
+
+//                     this.setState({
+//                         userDetails: {
+//                             nickName: '',
+//                             email: '',
+//                         password: ''
+//                         },
+//                         isAuth: true,
+//                         loggedInEmail: email                 
+//                     }, () => {
+//                         this.props.appHandleAuthSubmit()
+//                     })
+//                 }
+//             })
+//             .catch(errorMessage => {
+//                 this.setState({
+//                     errorToggle: true,
+//                     errorMessage: errorMessage
+//                 })
+//             })
+//     }
+// componentDidMount = () => {
+//     setInterval(() => {
+//         this.setState({ 
+//             isVisible: !this.state.isVisible
+//         })}, 3000)
+//         apiAuth()
+//         .then(userObj => {
+//             this.setState({
+//                 isAuth: true,
+//                 loggedInEmail:
+//                     userObj.email
+//             }, () => {
+//                 this.props.appHandleAuthSubmit || (() => {})()
+//             })
+//         })
+
+//         .catch(err => console.log(err))
+// }
        
-    }   
+   
+// logOut = (event)=>{
+//     this.setState({
+//         loggedEmail:  "",
 
+//         isAuth: false
+//     })
+// }
 
+// logIn = (event) => {
+//     event.preventDefault()
+//     apiLogIn()
+//     .then(result => {
+//         if(result){
+//             console.log("logged In")
 
+//             const { email } = result
 
+//             this.setState({
+//                 userDetails: {
+                    
+//                 email: '',
+//                 password: ''
+//                 },
+//                 isAuth: true,
+//                 loggedInEmail: email                 
+//             }, () => {
+//                 this.props.appHandleAuthSubmit()
+//             })
+//         }
+//     })
+//     .catch(errorMessage => {
+//         this.setState({
+//             errorToggle: true,
+//             errorMessage: errorMessage
+//         })
+//     })
+
+//     this.setState({ showModal: true })
+// }
+
+// signUp = (event) => {
+
+//     this.setState({
+
+//     })
+// }
 render() {
-    const { isVisible } = this.state
+    
     return (
-        <>
-        <nav className='navbar navbar-dark bg-dark'>
-            <div>
+    <div class="containter">
+        <nav className='navbar navbar-dark bg-dark stylebar'>
             
-            <PoseGroup>
-        {isVisible && [
-          // If animating more than one child, each needs a `key`
-          <Shade key="shade" className="shade test1" >hi</Shade>,
-          <Modal key="modal" className="modal test3" />
-        ]}
-      </PoseGroup>
+           
+        
+  <a className="navbar-brand" href="/">Writing Samples</a>
+  
+  
+    
+   
+    <span class="navbar-text navbar-brand">
+     About Me |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     Categories |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     Publish|
+    </span>
+    
+            { this.state.isAuth ?
                 
-                </div>
-                
-            { this.state.isAuth ? (
-                <>
                     <span>
                         { this.state.loggedInEmail }
                     </span>
+                    
+                    :
                     <button 
                         className='btn btn-warning'
-                        onClick={ this.logOut }
+                        onClick={ this.logIn }
                     >
-                        Log out
-                    </button>
-                </>
-            ) : (
-                <form 
-                className='form-inline'
-                onSubmit={ this.handleInputOnSubmit }
-                >
-                    <input 
-                        type='text' 
-                        placeholder='email'    
-                        className='form-control mr-sm-2'
-                        name='email'
-                        onChange={ this.handleInputOnChange }
-                    />
-                    <input 
-                        type='text' 
-                        placeholder='password' 
-                        className='form-control mr-sm-2'
-                        name='password'
-                        onChange={ this.handleInputOnChange }
-                    />
-                    <button className='btn btn-outline-success my-2 my-sn-0'>Sign Up | Sign In</button>
-                </form>
-            ) }
-        </nav>
-        <span
-            style={{ padding: '0px' }}
-            className={ this.state.errorToggle ? 'alert alert-danger' : '' }
-        >
-            { this.state.errorToggle ? this.state.errorMessage : '' }
-        </span>
-    
-        </>
-    )
-}
+                        Log In
+                    </button> 
+                         
+                      }  
+                      
+            {this.state.showModal && <Alert />}
+                
+
+              </nav>
+              
+              </div>
+                
+        )
+    }
 }
 
 

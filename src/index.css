@@ -31,3 +31,22 @@ code {
   .imgsizetop{
       max-width: 400px;
   }
+  .position{
+      margin-right:300px;
+  }
+  .stylebar{
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: orchid;
+  }
+  .containter{
+      margin-left:60px;
+      margin-right:50px;
+
+  }
+  .contmod{
+    margin-left:60px;
+
+  }
+  .navbar-brand{
+      font-family: monospace;
+  }

@@ -75,14 +75,17 @@ class Alert extends React.Component {
         const { nickName, email, password } = this.state.userDetails;
         return (
             <div>
-                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                    Launch demo modal
+               
+                <button type="button" className="btn btn-primary contmod" data-toggle="modal" data-target="#exampleModalCenter">
+                    Sign Up!
+
                 </button>
+               
                 <div className="modal fade" id="exampleModalCenter" trole="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                                <h5 className="modal-title" id="exampleModalCenterTitle">Welcome</h5>
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -101,7 +104,7 @@ class Alert extends React.Component {
                                         <label htmlFor="exampleInputPassword1">Password</label>
                                         <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} id="exampleInputPassword1" />
                                     </div>
-                                    <button type="submit" className="btn btn-primary">Submit</button>
+                                    <button type="submit" className="btn btn-primary" onlick= {this.handleInputOnSubmit}>Submit</button>
                                 </form>
                             </div>
                             <div className="modal-footer">
